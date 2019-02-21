@@ -1,0 +1,8 @@
+<div *ngIf="response as response; else loading">
+  <p *ngFor="let result of response.results">{{ result.name }}</p>
+</div>
+<ng-template #loading>
+  Characters are loading...
+</ng-template>
+<button (click)="this.previousPage(response.previous)">previous page</button>
+<button (click)="this.nextPage(response.next)">next page</button>
