@@ -1,54 +1,53 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CharacterService } from '../character.service';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { SwapiService } from '../swapi.service';
 
-import { SwapiResponse } from '../../models/swapi-responses.model';
-import { Subscription } from 'rxjs';
+import { SwapiResponse, Character } from '../../models/swapi-responses.model';
+import { Subscription, fromEvent } from 'rxjs';
+import { exhaustMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'swapi-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss']
 })
-export class CharactersComponent implements OnInit, OnDestroy {
+export class CharactersComponent implements OnInit, OnDestroy, AfterViewInit {
   response: SwapiResponse;
+  characters: Character[];
   subscription: Subscription;
+  @ViewChild('prevPageButton') previousPageButton: ElementRef;
+  @ViewChild('nextPageButton') nextPageButton: ElementRef;
 
-  constructor(private characterService: CharacterService) {}
+  constructor(private swapiService: SwapiService) {}
 
   ngOnInit() {
-    this.subscription = this.characterService
-      .getAllCharacters()
-      .subscribe(response => (this.response = response));
+    this.subscription = this.swapiService.getAllCharactersResponse().subscribe(response => {
+      this.response = response;
+      this.characters = response.results as Character[];
+    });
   }
-
-  previousPage(previousURL: string) {
-    if (previousURL) {
-      console.log('fetching previous page');
-      this.subscription.unsubscribe();
-      this.subscription = this.characterService
-        .getCharacters(previousURL)
-        .subscribe(
-          res => (this.response = res),
-          err => console.error(),
-          () => console.log('HTTP request completed')
-        );
-    }
+  ngAfterViewInit() {
+    console.log('view initialized');
+    this.bindButtonClickstreamToServiceCall(
+      this.previousPageButton.nativeElement,
+      this.response.previous
+    );
+    this.bindButtonClickstreamToServiceCall(this.nextPageButton.nativeElement, this.response.next);
   }
-
-  nextPage(nextURL: string) {
-    if (nextURL) {
-      console.log('fetching next page');
-      this.subscription.unsubscribe();
-      this.subscription = this.characterService
-        .getCharacters(nextURL)
-        .subscribe(
-          res => (this.response = res),
-          err => console.error(),
-          () => console.log('HTTP request completed')
-        );
-    }
+  bindButtonClickstreamToServiceCall(btn: any, url: string) {
+    fromEvent(btn, 'click')
+      .pipe(
+        tap(_ => console.log('prev page btn clicked')),
+        // stop incessant clickers from triggering multiple http-calls
+        exhaustMap(() => this.swapiService.getCharacterPage(url))
+      )
+      .subscribe(
+        response => {
+          this.response = response;
+          this.characters = response.results as Character[];
+        },
+        err => console.error()
+      );
   }
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
