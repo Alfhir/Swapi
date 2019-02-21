@@ -1,0 +1,29 @@
+<h3>
+  filter-bar
+</h3>
+<form [formGroup]="filterForm">
+  <div>
+    <label for="movie">Show only characters that appeared in </label>
+    <select id="film" formControlName="film">
+      <option [ngValue]="null" [disabled]="true">Choose a movie</option>
+      <option *ngFor="let film of films" [ngValue]="film.title">{{ film.title }}</option>
+    </select>
+  </div>
+  <div>
+    <label for="species">Show only characters of species </label>
+    <input type="text" id="species" placeholder="Enter species" formControlName="species" />
+  </div>
+  <div>
+    <label for="birth_year">Show only characters born between X and Y </label>
+    <input
+      type="text"
+      id="birth_year"
+      placeholder="Enter birth_year"
+      formControlName="birth_year"
+    />
+  </div>
+</form>
+<p>Active filter: {{ this.filter | json }}</p>
+<h3>species:</h3>
+<p *ngFor="let s of species">{{ s.name }}</p>
+<hr />
