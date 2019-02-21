@@ -19,33 +19,23 @@ export class SwapiService {
   constructor(private http: HttpClient) {}
 
   getAllCharactersResponse(): Observable<SwapiResponse> {
-    return this.http
-      .get<SwapiResponse>(endpoints.people)
-      .pipe
-      // tap(_ => console.log(`calling ${endpoints.people}`))
-      ();
+    return this.http.get<SwapiResponse>(endpoints.people);
   }
 
   getCharacterPage(url: string): Observable<SwapiResponse> {
-    return this.http
-      .get<SwapiResponse>(`${url}`)
-      .pipe
-      // tap(_ => console.log(`calling ${url}`))
-      ();
+    return this.http.get<SwapiResponse>(`${url}`);
   }
 
   getAllFilms(): Observable<Film[]> {
-    return this.http.get<SwapiResponse>(endpoints.films).pipe(
-      // tap(_ => console.log(`calling ${endpoints.films}`)),
-      map(response => response.results as Array<Film>)
-    );
+    return this.http
+      .get<SwapiResponse>(endpoints.films)
+      .pipe(map(response => response.results as Array<Film>));
   }
 
   getAllSpecies(): Observable<Species[]> {
     // TODO: Species are paginated, chain multiple calls
-    return this.http.get<SwapiResponse>(endpoints.species).pipe(
-      // tap(_ => console.log(`calling ${endpoints.species}`)),
-      map(response => response.results as Array<Species>)
-    );
+    return this.http
+      .get<SwapiResponse>(endpoints.species)
+      .pipe(map(response => response.results as Array<Species>));
   }
 }
