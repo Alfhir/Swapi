@@ -1,8 +1,10 @@
 <div *ngIf="response as response; else loading">
-  <p *ngFor="let result of response.results">{{ result.name }}</p>
+  <p *ngFor="let c of this.characters">{{ c.name }}</p>
 </div>
+<button #prevPageButton>
+  previous page
+</button>
+<button #nextPageButton>next page</button>
 <ng-template #loading>
   Characters are loading...
 </ng-template>
-<button (click)="this.previousPage(response.previous)">previous page</button>
-<button (click)="this.nextPage(response.next)">next page</button>
