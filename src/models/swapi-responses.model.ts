@@ -5,6 +5,7 @@ export interface SwapiResponse {
   previous: string | null;
   results: Result[];
 }
+// tslint:disable-next-line:no-empty-interface
 export interface Result {}
 
 export interface Character extends Result {

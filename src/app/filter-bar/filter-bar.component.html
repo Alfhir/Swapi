@@ -1,29 +1,29 @@
-<h3>
-  filter-bar
-</h3>
 <form [formGroup]="filterForm">
-  <div>
-    <label for="movie">Show only characters that appeared in </label>
-    <select id="film" formControlName="film">
-      <option [ngValue]="null" [disabled]="true">Choose a movie</option>
-      <option *ngFor="let film of films" [ngValue]="film.title">{{ film.title }}</option>
-    </select>
+  <div *ngIf="species.length > 1 && films.length > 1; else loadingFilmControl">
+    <div>
+      <label for="movie">Character appeared in: </label>
+      <select id="film" formControlName="film_url">
+        <option [ngValue]="null" [disabled]="true">Choose a movie</option>
+        <option *ngFor="let film of films" [ngValue]="film.url">{{ film.title }}</option>
+      </select>
+    </div>
+    <div>
+      <label for="species">Character is a: </label>
+      <select id="species" formControlName="species_url">
+        <option [ngValue]="null" [disabled]="true">Choose a species</option>
+        <option *ngFor="let species of species" [ngValue]="species.url">{{ species.name }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Born before: </label>
+      <input type="text" placeholder="year" formControlName="bornBefore" />
+    </div>
+    <div>
+      <label>Born after: </label>
+      <input type="text" placeholder="year" formControlName="bornAfter" />
+    </div>
   </div>
-  <div>
-    <label for="species">Show only characters of species </label>
-    <input type="text" id="species" placeholder="Enter species" formControlName="species" />
-  </div>
-  <div>
-    <label for="birth_year">Show only characters born between X and Y </label>
-    <input
-      type="text"
-      id="birth_year"
-      placeholder="Enter birth_year"
-      formControlName="birth_year"
-    />
-  </div>
+  <ng-template #loadingFilmControl>
+    Form data is loading...
+  </ng-template>
 </form>
-<p>Active filter: {{ this.filter | json }}</p>
-<h3>species:</h3>
-<p *ngFor="let s of species">{{ s.name }}</p>
-<hr />

@@ -8,10 +8,24 @@ import { CharacterDetailComponent } from './character-detail/character-detail.co
 import { HttpClientModule } from '@angular/common/http';
 import { FilterBarComponent } from './filter-bar/filter-bar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { CharacterComponent } from './character/character.component';
+
 
 @NgModule({
-  declarations: [AppComponent, CharactersComponent, CharacterDetailComponent, FilterBarComponent],
-  imports: [BrowserModule, HttpClientModule, ReactiveFormsModule],
+  declarations: [
+    AppComponent,
+    CharactersComponent,
+    CharacterDetailComponent,
+    FilterBarComponent,
+    CharacterComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    AppRoutingModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

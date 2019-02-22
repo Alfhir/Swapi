@@ -1,0 +1,25 @@
+<h2>Character Details</h2>
+<div *ngIf="character">
+  <h3>{{ character.name | uppercase }}</h3>
+  <div>
+    <label>Species:</label>
+    <ul>
+      <li *ngFor="let species of character.species">{{ species }}</li>
+    </ul>
+  </div>
+  <div>
+    <label>Movies:</label>
+    <ul>
+      <li *ngFor="let film of character.films">
+        {{ film }}
+      </li>
+    </ul>
+  </div>
+  <div>
+    <label>Starships:</label>
+    <ul>
+      <li *ngFor="let ships of character.starships">{{ ships }}</li>
+    </ul>
+  </div>
+</div>
+<button (click)="goBack()">Go back</button>
